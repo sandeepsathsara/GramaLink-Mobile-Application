@@ -1,6 +1,19 @@
 import 'package:flutter/material.dart';
 
+// Example next page after splash
+class LoginPage extends StatelessWidget {
+  final String language;
+  const LoginPage({super.key, required this.language});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(body: Center(child: Text("Selected Language: $language")));
+  }
+}
+
 class SplashScreen extends StatefulWidget {
+  const SplashScreen({super.key});
+
   @override
   _SplashScreenState createState() => _SplashScreenState();
 }
@@ -25,11 +38,6 @@ class _SplashScreenState extends State<SplashScreen>
     ).animate(CurvedAnimation(parent: _controller, curve: Curves.easeInOut));
 
     _controller.repeat(reverse: true);
-
-    // Optionally navigate to Login after some seconds
-    // Future.delayed(Duration(seconds: 4), () {
-    //   Navigator.pushReplacement(context, MaterialPageRoute(builder: (_) => LoginPage()));
-    // });
   }
 
   @override
@@ -55,7 +63,7 @@ class _SplashScreenState extends State<SplashScreen>
             ),
           ],
           image: DecorationImage(
-            image: AssetImage('assets/logo.png'), // Your logo here
+            image: AssetImage('assets/logo.png'),
             fit: BoxFit.contain,
           ),
         ),
@@ -83,6 +91,27 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 
+  Widget _buildLanguageButton(String text, String languageCode) {
+    return ElevatedButton(
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.white,
+        foregroundColor: Colors.blue[900],
+        padding: EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+      ),
+      onPressed: () {
+        Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(builder: (_) => LoginPage(language: text)),
+        );
+      },
+      child: Text(
+        text,
+        style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -97,12 +126,12 @@ class _SplashScreenState extends State<SplashScreen>
         child: SafeArea(
           child: Center(
             child: Column(
-              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 _buildLogo(),
                 SizedBox(height: 30),
                 Text(
-                  "e-Grama Niladhari",
+                  "E-Grama Niladhari",
                   style: TextStyle(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
@@ -121,6 +150,18 @@ class _SplashScreenState extends State<SplashScreen>
                 ),
                 SizedBox(height: 50),
                 _buildAnimatedDots(),
+                SizedBox(height: 60),
+                // Language Buttons
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _buildLanguageButton("සිංහල", "si"),
+                    SizedBox(width: 10),
+                    _buildLanguageButton("தமிழ்", "ta"),
+                    SizedBox(width: 10),
+                    _buildLanguageButton("English", "en"),
+                  ],
+                ),
               ],
             ),
           ),
